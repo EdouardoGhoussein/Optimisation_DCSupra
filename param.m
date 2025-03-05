@@ -18,4 +18,4 @@ nt = 2;             % nb tapes in parallele
 ts = 1e-4;          %[s] step time
 %% Variables
 %% Set stability limit
-PC_max = R*C/L*Ve^2;
+Ps_max = R*C/L*Ve^2;

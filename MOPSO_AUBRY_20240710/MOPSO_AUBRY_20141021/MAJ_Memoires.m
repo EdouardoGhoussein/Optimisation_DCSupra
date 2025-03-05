@@ -37,6 +37,9 @@ function [Memoires_Parametres,Memoires_Objectifs,Memoires_Contraintes,Somme_Viol
 N_particules = length(Essaim(1,:));    
 Contraintes_totales = [Contraintes Memoires_Contraintes];
 Contraintes_max=max(Contraintes_totales,[],2);
+
+
+
 Somme_Viols = sum( diag(1./Contraintes_max(Contraintes_max > 0),0) * max( Contraintes_totales(Contraintes_max > 0,:) , 0 ),1);
 
 Somme_Viols_Essaim = Somme_Viols(1:N_particules);

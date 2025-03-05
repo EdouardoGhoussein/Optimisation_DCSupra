@@ -8,10 +8,10 @@ run("param.m");
 model = 'DC_grid_noSCPF'; % Change this to your actual Simulink model name
 
 % Load the Simulink model
+load_system(model);
 
 
-
-  Domaine=[0 5e6 0];
+  Domaine=[0 1e 1e6];
   options = struct( ...
     ...%Paramètres de l'algorithme
     'AlgParams', struct(...    
