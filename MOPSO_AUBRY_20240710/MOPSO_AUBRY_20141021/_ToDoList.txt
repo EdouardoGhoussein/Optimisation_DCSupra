@@ -1,0 +1,4 @@
+- Rewrite documentation in English
+- Add ZDT example to documentation (en explain why ZDT is a good example)
+- Add binary variables (merge with project grid eolienne)
+- Rewrite so that its fully compatible with Matlab optimizers syntax

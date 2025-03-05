@@ -1,0 +1,30 @@
+# MATLAB specific files
+*.asv               # Autosave files
+*.mexa64            # Compiled mex files (Linux)
+*.mexmaci64         # Compiled mex files (Mac)
+*.mexw64            # Compiled mex files (Windows)
+*.p                 # P-code files
+*.fig               # Figure files
+*.mat               # Data files
+*_autosave.m       # Autosave scripts
+*_backup.m         # Backup scripts
+
+# Simulink specific files and folders
+slprj/             # Auto-generated Simulink project folder
+*.slxc             # Simulink cache files
+*.slxp             # Simulink state files
+*.simstate         # Simulation state files
+
+# Code generation and build artifacts
+codegen/           # Auto-generated code folder
+build/             # Build output folder (if applicable)
+
+# Temporary and cache files
+*.log
+*.cache
+*.tmp
+*.temp
+
+# OS generated files
+.DS_Store
+Thumbs.db
