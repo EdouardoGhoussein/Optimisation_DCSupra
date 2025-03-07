@@ -1,24 +1,25 @@
 % bla
 clear all, close all, clc
+tic
 % faire une fct qui permet de lancer la simulation et de recupérer les
 % indicateurs de performances
 run("param.m");
 
 % Define model name
-model = 'DC_grid_noSCPF'; % Change this to your actual Simulink model name
+model = 'DC_grid_SCPF'; % Change this to your actual Simulink model name
 
 % Load the Simulink model
 
 
 
-  Domaine=[0 5e6 0];
+  Domaine=[0 100 1];
   options = struct( ...
     ...%Paramètres de l'algorithme
     'AlgParams', struct(...    
     ...     %Nombre de particules
     'N_particules',     100,...
     ...     %Nombre d'itérations
-    'N_iterations',     50,...
+    'N_iterations',     30,...
     ...     %Nombre de paramètres d'optimisation
     'N_variables',      length(Domaine(:,1)), ...
     ...     %Nombre de particules optimales au sens de Pareto conservées en mémoire
@@ -64,3 +65,4 @@ model = 'DC_grid_noSCPF'; % Change this to your actual Simulink model name
     );
 
 [Front_Pareto,Front_Pareto_Objectifs]=MOPSO(options);
+toc

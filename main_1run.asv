@@ -5,7 +5,7 @@ clear all; close all; clc;
 run("param.m")
 
 % Define model name
-model = 'DC_grid_noSCPF'; % Change this to your actual Simulink model name
+model = 'DC_grid_SCPF'; % Change this to your actual Simulink model name
 
 % Load the Simulink model
 load_system(model);
@@ -23,9 +23,18 @@ data = simOut.yout;
 vcpl = data{1}.Values.Data;
 
 first_time = 0.112;
-indices = find(time < first_time);
+indices = time < first_time;
+maxIV = max(vcpl(indices));
 
+final_time = 0.2;
+indices = time > first_time;
+maxfV = max(vcpl(indices));
 
+if maxIV < maxfV 
+    disp("AAAAAAAAAAAAAAAAA")
+else
+    disp("sweethome alebama")
+end
 
 % Display some results
 disp('Simulation completed.');

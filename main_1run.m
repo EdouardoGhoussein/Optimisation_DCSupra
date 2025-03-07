@@ -5,7 +5,7 @@ clear all; close all; clc;
 run("param.m")
 
 % Define model name
-model = 'DC_grid_noSCPF'; % Change this to your actual Simulink model name
+model = 'DC_grid_SCPF'; % Change this to your actual Simulink model name
 
 % Load the Simulink model
 load_system(model);
@@ -19,7 +19,7 @@ close_system(model, 0);
 % Extract results
 time = simOut.tout;
 data = simOut.yout;
-
+disp(data);
 vcpl = data{1}.Values.Data;
 
 first_time = 0.112;

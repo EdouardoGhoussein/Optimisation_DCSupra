@@ -14,16 +14,12 @@ for index  = 1:l
     try
     [time,Vcpl,~,Vsc,Isc]=fct_run_model("DC_grid_SCPF");
     catch
-        Contraintes(1,index)=1;
-        Objectifs(1,index)=-5e9;
+        
         continue
     end
-    P = Vsc.*Isc;
-    disp(P +" "+nt);
-
-    Psc=max(P(time > 4));
+    Psc=Vsc(end)*Isc(end);
     assignin('base','Psc',Psc);
-    Contraintes(1,index)=fct_stable(time,Vcpl);
+    %Contraintes(1,index)=fct_stable(time,Vcpl);
     Objectifs(1,index)=-Psc;
     %disp(Ps_ref+ ": "+Contraintes(1,index));
 
