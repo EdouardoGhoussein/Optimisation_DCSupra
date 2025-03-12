@@ -8,8 +8,10 @@
 clear all, close all, clc
 
 %% Parameters
-a = 9;
-parameters = [a];
+%a = 9;
+run("param.m");
+
+%parameters = [a];
 
 %% Variables
 
@@ -19,23 +21,23 @@ addpath(genpath('MOPSO_AUBRY_20141021'));
 
 % Domain of the optimization variables
 Domaine = [
-    0 1 0; %[unit] description
-    0 1 0; %[unit] description
-    0 1 0; %[unit] description
-    0 1 0; %[unit] description
-    0 1 0; %[unit] description
-    0 1 0; %[unit] description
-    0 1 0; %[unit] description
-    0 1 0; %[unit] description
+    0 100 1; %[unit] description
+    %0 1 0; %[unit] description
+    %0 1 0; %[unit] description
+    %0 1 0; %[unit] description
+    %0 1 0; %[unit] description
+    %0 1 0; %[unit] description
+    %0 1 0; %[unit] description
+    %0 1 0; %[unit] description
     ];
 
-fonction = @(variables)fct_myobjcon(parameters,variables);
+fonction = @(variables)fct_myobjcon(variables);
 
 options = struct( ...
     ... %Parametres de l'algorithme
     'AlgParams', struct(...
-    'N_particules',     100,...    %Nombre de particules
-    'N_iterations',     100,...    %Nombre d'iteration
+    'N_particules',     3,...    %Nombre de particules
+    'N_iterations',     5,...    %Nombre d'iteration
     'N_variables',      length(Domaine(:,1)), ...   %Nombres de variables
     'N_archive',        100),...   %Taille de l'archive
     ...  %Parametres de strategie
@@ -74,7 +76,7 @@ plot_MOPSO_simout
 
 
 %% Objective and constraint function
-function [f,g,Divers] = fct_myobjcon(parameters,Essaim)
+function [f,g,Divers] = fct_myobjcon(Essaim)
 
     %%% Option 1: if the function is vectorized %%%
     
@@ -91,25 +93,52 @@ function [f,g,Divers] = fct_myobjcon(parameters,Essaim)
     % Divers = zeros(1,length(Essaim(1,:))); %Divers
     
     %%% Option 2: if the function is not vectorized %%%
-    
+    Divers = zeros(100,100);
+    f=zeros(2,size(Essaim,2));
+    g=zeros(1,size(Essaim,2));
     % Loop on each particule
     for k=1:1:size(Essaim,2)
-    
+        disp("particules "+ k);
+        %disp(Essaim);
         % Read the value of the opti variable for this particle
         variables = Essaim(:,k);
-    
+        %disp(size(variables));
+        %disp(variables);
         % Solve the matlab function for this particule
-        [outputs] = fct_ZDT(parameters,variables);
+        %[outputs] = fct_ZDT(parameters,variables);
+        %Ps_ref=Essaim(1,index);
+    nt=variables(1);
+    assignin('base','nt',nt);
+    
+    try
+    [time,Vcpl,~,Vsc,Isc]=fct_run_model("DC_grid_SCPF");
+    catch
+        g(1,k)=1;
+        f(1,k)=-5e9;
+        continue
+    end
+    P = Vsc.*Isc;
+    %disp(P +" "+nt);
+
+    Psc=max(P(time > 4));
+    assignin('base','Psc',Psc);
+    g(1,k)=fct_stable(time,Vcpl);
+    f(1,k)=-Psc;
+    disp(-f);
+    %disp(Ps_ref+ ": "+Contraintes(1,index));
+
+    f(2,k)=-Psc;
     
         % Objectifs (to be minimized)
-        f(1,k)= outputs(1); %[unit] blabla
-        f(2,k)= outputs(2); %[unit] blabla
+        %f(1,k)= outputs(1); %[unit] blabla
+        %f(2,k)= outputs(2); %[unit] blabla
     
         % Constraints (must be negative or null)
-        g(1,k)= 0; %[unit] blabla
+        %g(1,k)= 0; %[unit] blabla
     
         % Divers
-        Divers(1,k)= 0; %[unit] blabla
+        %Divers(1,k)= 0; %[unit] blabla
+        
     
         % Display result of the evaluation for this particule
         % [variables', f(:,k)', g(:,k)', Divers(:,k)']

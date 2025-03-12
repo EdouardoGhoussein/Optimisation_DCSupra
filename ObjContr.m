@@ -1,5 +1,7 @@
 function [Objectifs, Contraintes,Divers]= ObjContr(Essaim)
  [l,c]= size(Essaim);
+ %disp(l);
+ %disp(c);
 Objectifs=zeros(2,c);
 Contraintes=-ones(2,c);
 Divers=zeros(100,100);
@@ -9,6 +11,7 @@ Divers=zeros(100,100);
 for index  = 1:l 
     %Ps_ref=Essaim(1,index);
     nt=Essaim(1,index);
+    disp(Essaim);
     assignin('base','nt',nt);
     
     try
