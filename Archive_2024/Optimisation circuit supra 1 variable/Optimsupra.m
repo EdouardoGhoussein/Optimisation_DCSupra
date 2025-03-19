@@ -35,8 +35,8 @@ vartyp = [1; 0; 0];
 
 bounds = [lb ub vartyp];
 
-options.AlgParams.N_particules = 100;                                %Population size
 options.AlgParams.N_particules = 10;                                %Population size
+options.AlgParams.N_iterations = 5;                                %# of generations
 options.AlgParams.N_variables = length(vartyp);                     %# of variables
 options.AlgParams.N_archive = options.AlgParams.N_particules*20;    %Storage size for past optimal points
 
@@ -56,6 +56,7 @@ options.Sauvegarde.Etat = true;                                    %Whether to s
 options.Sauvegarde.Fichier = 'Resultats_MOPSO2_TEMP.mat';            %filename for save
 
 
+options.Initialisation.Etat = false;                                    %Initialization type
 options.Initialisation.Fichier = 'Resultats_MOPSO2_TEMP.mat';        %Initialization file (if true)
 
 options.Affichage.Etat = false;
