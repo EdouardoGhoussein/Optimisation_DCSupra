@@ -8,23 +8,28 @@ Divers=zeros(100,100);
 
 
 
-for index  = 1:l 
+for index  = 1:c
     %Ps_ref=Essaim(1,index);
+    disp(Essaim(index))
     nt=Essaim(1,index);
-    disp(Essaim);
+    %disp(Essaim);
+    %disp(nt);
     assignin('base','nt',nt);
     
     try
-    [time,Vcpl,~,Vsc,Isc]=fct_run_model("DC_grid_SCPF");
+    [time,Vcpl,Icpl,Vsc,Isc]=fct_run_model("DC_grid_SCPF");
     catch
         Contraintes(1,index)=1;
-        Objectifs(1,index)=-5e9;
+        Objectifs(1,index)=5e9;
         continue
     end
     P = Vsc.*Isc;
-    disp(P +" "+nt);
+    P_ref= Vcpl.* Icpl;
+    
 
     Psc=max(P(time > 4));
+    Ps_ref=max(P_ref(time > 4));
+    disp(P +" "+nt);
     assignin('base','Psc',Psc);
     Contraintes(1,index)=fct_stable(time,Vcpl);
     Objectifs(1,index)=-Psc;

@@ -36,8 +36,8 @@ fonction = @(variables)fct_myobjcon(variables);
 options = struct( ...
     ... %Parametres de l'algorithme
     'AlgParams', struct(...
-    'N_particules',     3,...    %Nombre de particules
-    'N_iterations',     5,...    %Nombre d'iteration
+    'N_particules',     1,...    %Nombre de particules
+    'N_iterations',     1,...    %Nombre d'iteration
     'N_variables',      length(Domaine(:,1)), ...   %Nombres de variables
     'N_archive',        100),...   %Taille de l'archive
     ...  %Parametres de strategie
@@ -54,7 +54,7 @@ options = struct( ...
     'Domaine',          Domaine), ... %Domaine de l'espace de recherche matrice (N_variable*2)
     ...  %Parametres de sauvegarde
     'Sauvegarde', struct(...
-    'Etat',             true,...    %true, on sauvegarde, false, on sauvegarde pas
+    'Etat',             false,...    %true, on sauvegarde, false, on sauvegarde pas
     'Fichier',          'Resultat_MOPSO_TEMP.mat'),...  %Nom du fichier dans lequel on sauvegarde les donnees
     ...  %Parametres d'initialisation
     'Initialisation', struct(...
@@ -69,6 +69,7 @@ options = struct( ...
 disp('Optimization in progress ...');
 tic
     MOPSO(options);
+    disp(nt);
 toc
 
 %% Display optimization result
@@ -98,7 +99,7 @@ function [f,g,Divers] = fct_myobjcon(Essaim)
     g=zeros(1,size(Essaim,2));
     % Loop on each particule
     for k=1:1:size(Essaim,2)
-        disp("particules "+ k);
+        disp(size(Essaim,2));
         %disp(Essaim);
         % Read the value of the opti variable for this particle
         variables = Essaim(:,k);
