@@ -14,13 +14,13 @@ function S = Is_stable(data, tol)
     if (upper(end) - lower(end)) < 0.1*mean(data(end-N:end))
         if all(udiff<0)
             if all(ldiff>0)
-                S = -5;
+                S = -1;%S = -5;
             elseif lmean > -tol && lsigma < tol
-                S = -3;
+                S = -1;%S = -3;
             end
         elseif umean < tol && usigma < tol
             if all(ldiff > 0)
-                S = -3;
+                S = -1;%S = -3;
             elseif lmean > -tol && lsigma < tol
                 S = -1;
             end

@@ -3,6 +3,15 @@ clear all, close all, clc
 
 load_system('Sim_avec_ScPF')
 
+%presentation draft soutenance lundi visio 11h30 environ
+%introduction du problème
+%valider le couplage
+%montrer un ou 2 probleme bien posé qu'on explique   
+%expliquer avec les doigts.
+%pertes frigo Psc Pshunt. combien de pertes . combien de watt electrique pour refroidir
+%regarder le graphe dans le magazine sur teams.
+% essayer de jouer sur le temperature comme présenté sur l'article
+%webplotdigitizer pour recuperer les données d'un graphe image.
 
 %%Parametres
 R = 4e-2;
@@ -29,14 +38,14 @@ n0 = 21;
 
 
 %%Bornes
-lb = [1; 1; 1e-3];
-ub = [5; 300; 600e-3];
-vartyp = [1; 0; 0];
+lb = [1; 1; 1e-3;230000];
+ub = [5; 300; 600e-3;10000000];
+vartyp = [1; 0; 0;0];
 
 bounds = [lb ub vartyp];
 
-options.AlgParams.N_particules = 100;                                %Population size
 options.AlgParams.N_particules = 10;                                %Population size
+options.AlgParams.N_iterations = 15;                                %# of generations
 options.AlgParams.N_variables = length(vartyp);                     %# of variables
 options.AlgParams.N_archive = options.AlgParams.N_particules*20;    %Storage size for past optimal points
 
@@ -49,13 +58,14 @@ options.StraParams.Fact_constrict = 0;
 
 
 
-options.Objectif.fonction = @J_obj2;                                %Objective function
+options.Objectif.fonction = @J_obj3;                                %Objective function
 options.Objectif.Domaine = bounds;                          %Domain of each variable (in order: lower bound, upper bound, type (continuous/discrete)
 
 options.Sauvegarde.Etat = true;                                    %Whether to save after each iteration
 options.Sauvegarde.Fichier = 'Resultats_MOPSO2_TEMP.mat';            %filename for save
 
 
+options.Initialisation.Etat = false;                                    %Initialization type
 options.Initialisation.Fichier = 'Resultats_MOPSO2_TEMP.mat';        %Initialization file (if true)
 
 options.Affichage.Etat = false;
@@ -89,9 +99,10 @@ set_param(Rsh_path, Rsh_val, 'Rsh');
 %%
 hold on
 plt_options.filename = 'Resultats_MOPSO2_TEMP.mat';
-plt_options.obj_labels = ["CAPEX","OPEX"];
+plt_options.obj_labels = ["Psc","P"];
 plt_options.var_labels = ["n_{t}" "L_{t}" "R_{sh}"];
-plt_options.title = 'Optimisation de CAPEX et OPEX';
+plt_options.Ctr_labels = ["S" "T-T_{max}" "P=P_ref"];
+plt_options.title = '';
 plt_options.bounds = bounds;
 mopso_plot(plt_options)
 
